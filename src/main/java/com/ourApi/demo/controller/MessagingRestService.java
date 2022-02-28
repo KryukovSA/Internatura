@@ -1,7 +1,6 @@
 package com.ourApi.demo.controller;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.ourApi.demo.Message;
 import com.ourApi.demo.repozitory.SomeDataRepozitory;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
