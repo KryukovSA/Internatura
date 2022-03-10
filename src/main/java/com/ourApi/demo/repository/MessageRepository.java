@@ -1,16 +1,22 @@
 package com.ourApi.demo.repository;
+import com.ourApi.demo.model.Message;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.Map;
 
-@Slf4j
-@Repository
-public class MessageSomeDataRepository {
-    public Map<String, String> hashMap;
 
-    public MessageSomeDataRepository(Map<String, String> hashMap) {
+@Repository
+public interface MessageRepository extends JpaRepository<Message, String> {
+    Message getById(String topic);
+    Message saveAndFlush(Message msg);
+
+
+    /*public Map<String, String> hashMap;
+
+    public MessageRepository(Map<String, String> hashMap) {
         this.hashMap = hashMap;
     }
 
@@ -43,5 +49,5 @@ public class MessageSomeDataRepository {
             log.info("delete key data: " + key);
             this.hashMap.remove(key);
         }
-    }
+    }*/
 }
