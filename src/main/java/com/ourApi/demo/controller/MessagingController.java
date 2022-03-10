@@ -20,7 +20,7 @@ public class MessagingController {
     @GetMapping(params = {"key"})
     public Message getData(@RequestParam final String key) {
         log.info("GET info by key: " + key);
-        return messageService.getText(key);
+        return messageService.getMsg(key);
     }
 
     //сделать еще гет который все записи из таблицы печетеет все message напрмер в лист объеденить

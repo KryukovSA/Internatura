@@ -12,7 +12,7 @@ import java.util.Map;
 public interface MessageRepository extends JpaRepository<Message, String> {
     Message getById(String topic);
     Message saveAndFlush(Message msg);
-
+    Message getMessageByTopic(String topic);
 
     /*public Map<String, String> hashMap;
 

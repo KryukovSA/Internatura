@@ -11,9 +11,6 @@ import javax.persistence.*;
 @Entity(name = "message")
 public class Message {
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
-    /*@GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")*/
     private String topic;
 
     @Column
