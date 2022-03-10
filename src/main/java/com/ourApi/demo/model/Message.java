@@ -2,8 +2,6 @@ package com.ourApi.demo.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 
 @AllArgsConstructor
@@ -17,6 +15,5 @@ public class Message {
     private String text;
 
     public Message() {
-
     }
 }

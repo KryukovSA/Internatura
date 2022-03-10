@@ -5,6 +5,8 @@ import com.ourApi.demo.repository.MessageRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -16,13 +18,22 @@ public class MessageService {
         Message message = messageRepository.getMessageByTopic(topic);
         if(message != null)
             return message;
-        else //например верну мессаже с нулями
-            return messageRepository.getMessageByTopic(topic);
+        message = new Message(null, "NoData");
+        return message;
     }
 
-    public Message addMessage(Message msg) {
+    @Transactional
+    public void deleteMsg(String topic){
+        messageRepository.deleteMessageByTopic(topic);
+    }
+
+    public Message addMsg(Message msg) {
         log.info("сообщение " + msg);
         messageRepository.saveAndFlush(msg);
         return msg;
+    }
+
+    public List<Message> getAllMsg(){
+        return  messageRepository.findAll();
     }
 }
