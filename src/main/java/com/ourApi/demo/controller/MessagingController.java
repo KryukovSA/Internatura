@@ -1,5 +1,6 @@
 package com.ourApi.demo.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ourApi.demo.model.Message;
 import com.ourApi.demo.repository.MessageRepository;
 import com.ourApi.demo.service.MessageService;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/request/Info")
+
 @AllArgsConstructor
 @Slf4j
 public class MessagingController {
@@ -27,7 +29,6 @@ public class MessagingController {
     public void addData(@RequestBody Message message) {
         log.info("POST info " + message);
         messageService.addMessage(message);
-        //dataRepository.addInHashMap(message.getTopic(), message.getText());
     }
 
     /*@DeleteMapping

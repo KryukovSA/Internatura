@@ -10,11 +10,10 @@ import javax.persistence.*;
 @Data
 @Entity(name = "message")
 public class Message {
-    /* @Id
-     @GeneratedValue(strategy = GenerationType.AUTO)*/
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    //@GeneratedValue(strategy = GenerationType.AUTO)
+    /*@GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")*/
     private String topic;
 
     @Column

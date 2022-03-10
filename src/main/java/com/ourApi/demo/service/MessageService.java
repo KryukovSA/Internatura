@@ -5,6 +5,7 @@ import com.ourApi.demo.repository.MessageRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
 @Slf4j
 @AllArgsConstructor
 @Service
@@ -19,12 +20,9 @@ public class MessageService {
     }
 
     public Message addMessage(Message msg) {
-        Message savedMessage = new Message();
-        savedMessage.setTopic(msg.getTopic());
-        savedMessage.setText(msg.getText());
-        log.info("сообщение " + savedMessage);
-        messageRepository.saveAndFlush(savedMessage);
-        return savedMessage;
+        log.info("сообщение " + msg);
+        messageRepository.saveAndFlush(msg);
+        return msg;
     }
 
 
