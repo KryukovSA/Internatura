@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Slf4j
@@ -14,26 +15,23 @@ import java.util.List;
 public class MessageService {
     private final MessageRepository messageRepository;
 
-    public Message getMsg(String topic) {
-        Message message = messageRepository.getMessageByTopic(topic);
-        if(message != null)
-            return message;
-        message = new Message(null, "NoData");
-        return message;
+    public Message getMessage(String topic) {
+        return messageRepository.getMessageByTopic(topic);
     }
 
     @Transactional
-    public void deleteMsg(String topic){
+    public void deleteMessage(String topic){
         messageRepository.deleteMessageByTopic(topic);
     }
 
-    public Message addMsg(Message msg) {
+    public Message addMessage(Message msg) {
         log.info("сообщение " + msg);
         messageRepository.saveAndFlush(msg);
         return msg;
     }
 
-    public List<Message> getAllMsg(){
+    public List<Message> getAllMessage(){
         return  messageRepository.findAll();
     }
+
 }

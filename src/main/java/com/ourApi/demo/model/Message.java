@@ -1,10 +1,14 @@
 package com.ourApi.demo.model;
 
+import com.ourApi.demo.usersDatatype.UserDatatype;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Entity(name = "message")
 public class Message {
@@ -14,6 +18,13 @@ public class Message {
     @Column
     private String text;
 
-    public Message() {
-    }
+    @Column
+    @Enumerated(EnumType.STRING)
+    private UserDatatype.Importance importance;
+
+    @Column
+    private String keyword;
+
+    @Column
+    private String author;
 }
