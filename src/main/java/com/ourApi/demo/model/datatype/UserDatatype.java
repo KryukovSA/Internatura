@@ -1,12 +1,12 @@
-package com.ourApi.demo.usersDatatype;
+package com.ourApi.demo.model.datatype;
 
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class UserDatatype {
     public enum Importance{
-        low,
-        medium,
-        high
+        LOW,
+        MEDIUM,
+        HIGH
     }
 }

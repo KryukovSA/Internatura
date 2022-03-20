@@ -1,6 +1,6 @@
-package com.ourApi.demo.model;
+package com.ourApi.demo.model.entity;
 
-import com.ourApi.demo.usersDatatype.UserDatatype;
+import com.ourApi.demo.model.datatype.UserDatatype;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

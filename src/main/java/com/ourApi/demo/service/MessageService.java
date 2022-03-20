@@ -1,9 +1,10 @@
 package com.ourApi.demo.service;
 
-import com.ourApi.demo.model.Message;
+import com.ourApi.demo.model.entity.Message;
 import com.ourApi.demo.repository.MessageRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,23 +16,35 @@ import java.util.List;
 public class MessageService {
     private final MessageRepository messageRepository;
 
-    public Message getMessage(String topic) {
-        return messageRepository.getMessageByTopic(topic);
+    public ResponseEntity<Message> getMessage(String topic) {
+        if(messageRepository.getMessageByTopic(topic) != null){
+            return ResponseEntity.ok(messageRepository.getMessageByTopic(topic));
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @Transactional
-    public void deleteMessage(String topic){
-        messageRepository.deleteMessageByTopic(topic);
+    public ResponseEntity deleteMessage(String topic){
+        if (messageRepository.findAll().contains(messageRepository.getMessageByTopic(topic))) {
+            messageRepository.deleteMessageByTopic(topic);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
-    public Message addMessage(Message msg) {
+    public ResponseEntity addMessage(Message msg) {
         log.info("сообщение " + msg);
-        messageRepository.saveAndFlush(msg);
-        return msg;
+        if (msg.getTopic() != null & msg.getText() != null) {
+            messageRepository.saveAndFlush(msg);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
     }
 
-    public List<Message> getAllMessage(){
-        return  messageRepository.findAll();
+    public ResponseEntity<List<Message>> getAllMessage(){
+        if(messageRepository.findAll().isEmpty() == false){
+            return ResponseEntity.ok(messageRepository.findAll());
+        }
+        return ResponseEntity.noContent().build();
     }
-
 }
