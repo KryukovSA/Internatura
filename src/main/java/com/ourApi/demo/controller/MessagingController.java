@@ -18,27 +18,50 @@ public class MessagingController {
     private final MessageService messageService;
 
     @GetMapping(params = {"topic"})
-    public ResponseEntity<Message> getMessage(@RequestParam final String topic) {
-        log.info("GET info by topic: " + topic);
-        return messageService.getMessage(topic);
+    public ResponseEntity getMessage(@RequestParam final String topic) {
+        log.info("GET info by topic:" + topic);
+        try {
+            messageService.getMessage(topic);
+            return ResponseEntity.ok(messageService.getMessage(topic));
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<Message>> getAllMessages() {
         log.info("GET all info");
-        return messageService.getAllMessage();
+        try {
+            return ResponseEntity.ok(messageService.getAllMessage());
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @PostMapping
     public ResponseEntity addMessage(@RequestBody Message message) {
         log.info("POST info " + message);
-        return messageService.addMessage(message);
+        try {
+            messageService.addMessage(message);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException illegalArgumentException) {
+            illegalArgumentException.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @DeleteMapping
     public ResponseEntity deleteMessage(@RequestBody final String topic) {
         log.info("DELETE info by key " + topic);
-        return messageService.deleteMessage(topic);
+        try {
+            messageService.deleteMessage(topic);
+            return ResponseEntity.ok().build();
+        } catch (NullPointerException e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
 

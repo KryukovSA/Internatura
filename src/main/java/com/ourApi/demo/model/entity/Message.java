@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,4 +28,10 @@ public class Message {
 
     @Column
     private String author;
+
+    @Column
+    private Date createdDataTime;
+
+    public Message(String topic0, String text0) {
+    }
 }

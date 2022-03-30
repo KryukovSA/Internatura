@@ -4,10 +4,10 @@ import com.ourApi.demo.model.entity.Message;
 import com.ourApi.demo.repository.MessageRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -16,35 +16,37 @@ import java.util.List;
 public class MessageService {
     private final MessageRepository messageRepository;
 
-    public ResponseEntity<Message> getMessage(String topic) {
-        if(messageRepository.getMessageByTopic(topic) != null){
-            return ResponseEntity.ok(messageRepository.getMessageByTopic(topic));
+    public Message getMessage(String topic) throws NullPointerException {
+        Message message = messageRepository.getMessageByTopic(topic);
+        if(message != null){
+            return message;
         }
-        return ResponseEntity.noContent().build();
+        throw new NullPointerException();
     }
 
     @Transactional
-    public ResponseEntity deleteMessage(String topic){
+    public void deleteMessage(String topic) throws NullPointerException{
         if (messageRepository.findAll().contains(messageRepository.getMessageByTopic(topic))) {
             messageRepository.deleteMessageByTopic(topic);
-            return ResponseEntity.ok().build();
+        } else {
+            throw new NullPointerException();
         }
-        return ResponseEntity.badRequest().build();
     }
 
-    public ResponseEntity addMessage(Message msg) {
+    public void addMessage(Message msg) throws IllegalArgumentException {
         log.info("сообщение " + msg);
         if (msg.getTopic() != null & msg.getText() != null) {
+            msg.setCreatedDataTime(new Date());
             messageRepository.saveAndFlush(msg);
-            return ResponseEntity.ok().build();
+        } else {
+            throw new IllegalArgumentException("некорректный ввод");
         }
-        return ResponseEntity.badRequest().build();
     }
 
-    public ResponseEntity<List<Message>> getAllMessage(){
-        if(messageRepository.findAll().isEmpty() == false){
-            return ResponseEntity.ok(messageRepository.findAll());
+    public List<Message> getAllMessage() throws NullPointerException{
+        if(!messageRepository.findAll().isEmpty()){
+            return messageRepository.findAll();
         }
-        return ResponseEntity.noContent().build();
+        throw new NullPointerException();
     }
 }
