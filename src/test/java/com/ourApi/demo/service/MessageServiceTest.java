@@ -21,7 +21,7 @@ public class MessageServiceTest {
     void setUp(){
         message = initializeMessage();
         repository = mock(MessageRepository.class);
-        service = new MessageService(repository);
+        service = spy(new MessageService(repository));
     }
 
     @Test
@@ -42,14 +42,13 @@ public class MessageServiceTest {
     public void useNumberOfInteractionsDelete() {
         ArrayList listMessage = new ArrayList<Message>();
         listMessage.add(message);
-        service =  mock(MessageService.class);
         when(repository.findAll()).thenReturn(listMessage);
         doNothing().when(repository).deleteMessageByTopic("topic1");
         doNothing().when(service).deleteMessage("topic1");
         System.out.print(message);
         service.deleteMessage("topic1");
         verify(service, times(1)).deleteMessage("topic1");
-        //verify(repository, times(1)).deleteMessageByTopic("topic1");
+        verify(repository, times(1)).deleteMessageByTopic("topic1");
         //verify(repository, times(1)).findAll();
     }
 
