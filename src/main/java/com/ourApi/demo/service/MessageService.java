@@ -43,7 +43,7 @@ public class MessageService {
         }
     }
 
-    public List<Message> getAllMessage() throws NullPointerException{
+    public List<Message> getAllMessages() throws NullPointerException{
         if(!messageRepository.findAll().isEmpty()){
             return messageRepository.findAll();
         }

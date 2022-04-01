@@ -33,7 +33,7 @@ public class MessagingController {
     public ResponseEntity<List<Message>> getAllMessages() {
         log.info("GET all info");
         try {
-            return ResponseEntity.ok(messageService.getAllMessage());
+            return ResponseEntity.ok(messageService.getAllMessages());
         } catch (NullPointerException e){
             e.printStackTrace();
             return ResponseEntity.noContent().build();

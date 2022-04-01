@@ -32,13 +32,34 @@ public class MessageServiceTest {
     }
 
     @Test
-    public void useNumberOfInteractionsSaveFlush() {
+    public void when_getMessage_thenNotFound() {
+        when(repository.getMessageByTopic("topic")).thenReturn(null);
+        try{
+            service.getMessage("topic");
+        } catch (NullPointerException ex) {
+            System.err.println(ex);
+        }
+        verify(repository, times(1)).getMessageByTopic("topic");
+    }
+
+    @Test
+    public void useNumberOfInteractions_SaveFlush() {
         service.addMessage(message);
         verify(repository, times(1)).saveAndFlush(message);
     }
 
-
     @Test
+    public void useNumberOfInteractions_NotSaveFlush(){
+        message.setTopic(null);
+        try {
+            service.addMessage(message);
+        } catch (IllegalArgumentException ex) {
+            System.err.println(ex);
+        }
+        verify(repository, times(0)).saveAndFlush(message);
+    }
+
+    /*@Test
     public void useNumberOfInteractionsDelete() {
         ArrayList listMessage = new ArrayList<Message>();
         listMessage.add(message);
@@ -47,17 +68,29 @@ public class MessageServiceTest {
         doNothing().when(service).deleteMessage("topic1");
         System.out.print(message);
         service.deleteMessage("topic1");
-        verify(service, times(1)).deleteMessage("topic1");
+        //verify(service, times(1)).deleteMessage("topic1");
         verify(repository, times(1)).deleteMessageByTopic("topic1");
         //verify(repository, times(1)).findAll();
-    }
+    }*/
 
     @Test
     public void when_getAll_thenSuccess() {
         ArrayList listMessage = new ArrayList<Message>();
         listMessage.add(message);
         when(repository.findAll()).thenReturn(listMessage);
-        assertEquals(listMessage, service.getAllMessage());
+        assertEquals(listMessage, service.getAllMessages());
         verify(repository, times(2)).findAll();
+    }
+
+    @Test
+    public void when_getAllMessages_thenNotFound() {
+        ArrayList listMessage = new ArrayList<Message>();
+        when(repository.findAll()).thenReturn(listMessage);
+        try{
+            service.getAllMessages();
+        } catch (NullPointerException ex) {
+            System.err.println(ex);
+        }
+        verify(repository, times(1)).findAll();
     }
 }
