@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
+import static com.ourApi.demo.utils.TestUtils.initializeListMessage;
 import static com.ourApi.demo.utils.TestUtils.initializeMessage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class MessageServiceTest {
@@ -16,10 +18,12 @@ public class MessageServiceTest {
     private MessageRepository repository;
     private MessageService service;
     private Message message;
+    private ArrayList<Message> listMessage;
 
     @BeforeEach
     void setUp(){
         message = initializeMessage();
+        listMessage = initializeListMessage();
         repository = mock(MessageRepository.class);
         service = spy(new MessageService(repository));
     }
@@ -33,13 +37,9 @@ public class MessageServiceTest {
 
     @Test
     public void when_getMessage_thenNotFound() {
-        when(repository.getMessageByTopic("topic")).thenReturn(null);
-        try{
-            service.getMessage("topic");
-        } catch (NullPointerException ex) {
-            System.err.println(ex);
-        }
-        verify(repository, times(1)).getMessageByTopic("topic");
+        when(repository.getMessageByTopic("topic1")).thenReturn(null);
+        assertThrows(NullPointerException.class, () -> service.getMessage("topic1"));
+        verify(repository, times(1)).getMessageByTopic("topic1");
     }
 
     @Test
@@ -50,7 +50,7 @@ public class MessageServiceTest {
 
     @Test
     public void useNumberOfInteractions_NotSaveFlush(){
-        message.setTopic(null);
+      message.setTopic(null);
         try {
             service.addMessage(message);
         } catch (IllegalArgumentException ex) {
@@ -59,24 +59,18 @@ public class MessageServiceTest {
         verify(repository, times(0)).saveAndFlush(message);
     }
 
-    /*@Test
+    @Test
     public void useNumberOfInteractionsDelete() {
-        ArrayList listMessage = new ArrayList<Message>();
-        listMessage.add(message);
         when(repository.findAll()).thenReturn(listMessage);
+        when(repository.getMessageByTopic(anyString())).thenReturn(message);
         doNothing().when(repository).deleteMessageByTopic("topic1");
-        doNothing().when(service).deleteMessage("topic1");
-        System.out.print(message);
         service.deleteMessage("topic1");
-        //verify(service, times(1)).deleteMessage("topic1");
+        verify(repository, times(1)).findAll();
         verify(repository, times(1)).deleteMessageByTopic("topic1");
-        //verify(repository, times(1)).findAll();
-    }*/
+    }
 
     @Test
     public void when_getAll_thenSuccess() {
-        ArrayList listMessage = new ArrayList<Message>();
-        listMessage.add(message);
         when(repository.findAll()).thenReturn(listMessage);
         assertEquals(listMessage, service.getAllMessages());
         verify(repository, times(2)).findAll();
@@ -84,13 +78,8 @@ public class MessageServiceTest {
 
     @Test
     public void when_getAllMessages_thenNotFound() {
-        ArrayList listMessage = new ArrayList<Message>();
-        when(repository.findAll()).thenReturn(listMessage);
-        try{
-            service.getAllMessages();
-        } catch (NullPointerException ex) {
-            System.err.println(ex);
-        }
+        when(repository.findAll()).thenReturn(null);
+        assertThrows(NullPointerException.class, () -> service.getAllMessages());
         verify(repository, times(1)).findAll();
     }
 }

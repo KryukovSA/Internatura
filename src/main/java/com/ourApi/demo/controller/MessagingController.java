@@ -18,7 +18,7 @@ public class MessagingController {
     private final MessageService messageService;
 
     @GetMapping(params = {"topic"})
-    public ResponseEntity getMessage(@RequestParam final String topic) {
+    public ResponseEntity<Message> getMessage(@RequestParam final String topic) {
         log.info("GET info by topic:" + topic);
         try {
             messageService.getMessage(topic);
@@ -41,7 +41,7 @@ public class MessagingController {
     }
 
     @PostMapping
-    public ResponseEntity addMessage(@RequestBody Message message) {
+    public ResponseEntity<Message> addMessage(@RequestBody Message message) {
         log.info("POST info " + message);
         try {
             messageService.addMessage(message);
@@ -53,7 +53,7 @@ public class MessagingController {
     }
 
     @DeleteMapping
-    public ResponseEntity deleteMessage(@RequestBody final String topic) {
+    public ResponseEntity<Message> deleteMessage(@RequestBody final String topic) {
         log.info("DELETE info by key " + topic);
         try {
             messageService.deleteMessage(topic);

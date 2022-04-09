@@ -31,7 +31,4 @@ public class Message {
 
     @Column
     private Date createdDataTime;
-
-    public Message(String topic0, String text0) {
-    }
 }
